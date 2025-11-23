@@ -2,7 +2,8 @@ CREATE SCHEMA app;
 
 CREATE TABLE app.users
 (
-    id         uuid   NOT NULL,
+    id         uuid         NOT NULL,
+    telegramId integer      NULL,
     first_name VARCHAR(255) NULL,
     last_name  VARCHAR(255) NULL,
     email      VARCHAR(255) NULL,
