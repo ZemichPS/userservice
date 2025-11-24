@@ -2,23 +2,25 @@ package com.example.user_service.service.sm.registration;
 
 import com.example.user_service.service.sm.AbstractAction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.statemachine.config.EnableStateMachine;
-import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
+import org.springframework.statemachine.config.*;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.statemachine.config.configuration.StateMachineConfiguration;
 
 import java.util.EnumSet;
 import java.util.Map;
 
 @Configuration
-@EnableStateMachine
+@EnableStateMachineFactory
 @RequiredArgsConstructor
 public class MachineConfig extends EnumStateMachineConfigurerAdapter<RegistrationState, RegistrationEvent> {
 
     private final Map<String, AbstractAction<RegistrationState, RegistrationEvent>> actionMap;
 
-    @Override
+     @Override
     public void configure(StateMachineStateConfigurer<RegistrationState, RegistrationEvent> states) throws Exception {
         states.withStates()
                 .initial(RegistrationState.START)
