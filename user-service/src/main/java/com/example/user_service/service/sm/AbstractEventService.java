@@ -13,12 +13,14 @@ public abstract class AbstractEventService<S, E> {
 
     public void processUserInput(Update update) throws Exception {
         Long telegramUserId = update.getMessage().getFrom().getId();
+        String chatId = update.getMessage().getChatId().toString();
         S currentState = stateMachineService.getCurrentState(telegramUserId.toString());
         String text = update.getMessage().getText();
         E event = resolveEvent(currentState);
         stateMachineService.handleEvent(telegramUserId.toString(), MessageBuilder.withPayload(event)
                 .setHeader("text", text)
                 .setHeader("telegramUserId", telegramUserId.toString())
+                .setHeader("chatId", chatId)
                 .build());
     }
 

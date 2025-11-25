@@ -13,7 +13,15 @@ public class UpdateResolver {
 
     public void resolve(Update update) {
         Long telegramUserId = update.getMessage().getFrom().getId();
-        Scenario currentScenario = scenarioManager.getActiveScenario(telegramUserId);
+        String text = update.getMessage().getText();
+
+        Scenario currentScenario;
+        if(text.startsWith("/")){
+            String command = text.substring(1);
+            currentScenario = Scenario.valueOf(command.toUpperCase());
+            scenarioManager.setScenario(telegramUserId, currentScenario);
+        } else currentScenario = scenarioManager.getActiveScenario(telegramUserId);
+
         scenarioHandlerHolder.handle(currentScenario, update);
     }
 }

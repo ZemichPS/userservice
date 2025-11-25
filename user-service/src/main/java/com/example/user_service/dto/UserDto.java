@@ -17,7 +17,7 @@ public class UserDto {
         this.id = id;
     }
     private UUID id;
-    private Long telegramUserId;
+    private String telegramUserId;
     private String firstName;
     private String lastName;
     private String email;

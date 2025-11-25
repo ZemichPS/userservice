@@ -35,6 +35,7 @@ public class MachineConfig extends EnumStateMachineConfigurerAdapter<Registratio
                     .target(RegistrationState.AWAITING_NAME)
                     .event(RegistrationEvent.START_REGISTRATION)
                     .action(actionMap.get("start"))
+                    //.action(context -> System.out.println("start registration"))
                 .and()
                 .withExternal()
                     .source(RegistrationState.AWAITING_NAME)

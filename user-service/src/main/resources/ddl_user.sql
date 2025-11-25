@@ -1,5 +1,5 @@
-CREATE SCHEMA app;
-
+CREATE SCHEMA IF NOT EXISTS app;
+DROP TABLE app.users;
 CREATE TABLE app.users
 (
     id         uuid         NOT NULL,

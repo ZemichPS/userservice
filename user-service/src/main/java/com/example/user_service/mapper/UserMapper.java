@@ -21,6 +21,7 @@ public class UserMapper {
     public static User toUser(UserDto userDto) {
         return User.builder()
                 .id(userDto.getId())
+                .telegramUserId(userDto.getTelegramUserId())
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
                 .email(userDto.getEmail())

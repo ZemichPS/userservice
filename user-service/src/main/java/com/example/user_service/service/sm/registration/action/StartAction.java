@@ -23,12 +23,12 @@ public class StartAction extends AbstractAction<RegistrationState, RegistrationE
 
     @Override
     public void execute(StateContext<RegistrationState, RegistrationEvent> context) {
-        String chatId = context.getExtendedState().get("chatId", String.class);
-        Long telegramUserId = Long.parseLong(context.getExtendedState().get("telegramUserId", String.class));
-
+        String chatId = context.getMessage().getHeaders().get("chatId", String.class);
+        String telegramUserId = context.getMessage().getHeaders().get("telegramUserId", String.class);
         UserDto user = new UserDto(UUID.randomUUID());
         user.setTelegramUserId(telegramUserId);
         SendMessage sm = createSendMessage(chatId);
+        System.out.println("Отработал Action START");
         try {
             telegramTextSender.sendText(sm);
         } catch (TelegramApiException e) {
