@@ -28,7 +28,6 @@ public class StartAction extends AbstractAction<RegistrationState, RegistrationE
         UserDto user = new UserDto(UUID.randomUUID());
         user.setTelegramUserId(telegramUserId);
         SendMessage sm = createSendMessage(chatId);
-        System.out.println("Отработал Action START");
         try {
             telegramTextSender.sendText(sm);
         } catch (TelegramApiException e) {

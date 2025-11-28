@@ -19,7 +19,6 @@ public class NameInputAction extends AbstractAction<RegistrationState, Registrat
 
     @Override
     public void execute(StateContext<RegistrationState, RegistrationEvent> context) {
-        System.out.println("Работает Action nameInput");
         String chatId = context.getMessage().getHeaders().get("chatId", String.class);
         String name = context.getMessage().getHeaders().get("text", String.class);
 

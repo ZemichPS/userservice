@@ -44,7 +44,6 @@ public class MachineConfig extends EnumStateMachineConfigurerAdapter<Registratio
                     .target(RegistrationState.AWAITING_NAME)
                     .event(RegistrationEvent.START_REGISTRATION)
                     .action(actionMap.get("start"))
-                    //.action(context -> System.out.println("start registration"))
                 .and()
                 .withExternal()
                     .source(RegistrationState.AWAITING_NAME)
@@ -56,7 +55,8 @@ public class MachineConfig extends EnumStateMachineConfigurerAdapter<Registratio
                     .source(RegistrationState.AWAITING_EMAIL)
                     .target(RegistrationState.COMPLETED)
                     .event(RegistrationEvent.SUBMIT_EMAIL)
-                    .action(actionMap.get("emailInput"));
+                .action(context -> System.out.println("FINISHED!!!!!"));
+             //       .action(actionMap.get("emailInput"));
 
     }
 

@@ -27,14 +27,17 @@ public abstract class AbstractStateMachineService<S, E> {
         if (stateMachine.getState() == null) {
             stateMachine.start();
         }
-        stateMachine.sendEvent(message);
+
+        if (!stateMachine.sendEvent(message)) throw new RuntimeException("Send event failed");
         persister.persist(stateMachine, stateMachineId);
     }
 
     public S getCurrentState(String stateMachineId) throws Exception {
         StateMachine<S, E> stateMachine = stateMachineFactory.getStateMachine();
         persister.restore(stateMachine, stateMachineId);
-        stateMachine.start();
+        if (stateMachine.getState() == null) {
+            stateMachine.start();
+        }
         return stateMachine.getState().getId();
     }
 

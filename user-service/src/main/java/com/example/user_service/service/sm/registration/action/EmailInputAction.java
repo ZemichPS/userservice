@@ -29,8 +29,7 @@ public class EmailInputAction extends AbstractAction<RegistrationState, Registra
 
     @Override
     public void execute(StateContext<RegistrationState, RegistrationEvent> context) {
-        System.out.println("Отрабатывает action emailInput");
-        String telegramUserId = context.getExtendedState().get("telegramUserId", String.class);
+        String telegramUserId = context.getMessage().getHeaders().get("telegramUserId", String.class);
         String chatId = context.getMessage().getHeaders().get("chatId", String.class);
         String email = context.getMessage().getHeaders().get("text", String.class);
         UserDto user = context.getExtendedState().get("user", UserDto.class);
