@@ -19,10 +19,11 @@ public class NameInputAction extends AbstractAction<RegistrationState, Registrat
 
     @Override
     public void execute(StateContext<RegistrationState, RegistrationEvent> context) {
-        String chatId = context.getExtendedState().get("chatId", String.class);
-        String name = context.getExtendedState().get("text", String.class);
-        UserDto user = context.getExtendedState().get("user", UserDto.class);
+        System.out.println("Работает Action nameInput");
+        String chatId = context.getMessage().getHeaders().get("chatId", String.class);
+        String name = context.getMessage().getHeaders().get("text", String.class);
 
+        UserDto user = context.getExtendedState().get("user", UserDto.class);
         user.setFirstName(name);
         user.setLastName("telegramUser");
 

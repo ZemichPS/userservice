@@ -16,12 +16,13 @@ public class UpdateResolver {
         String text = update.getMessage().getText();
 
         Scenario currentScenario;
-        if(text.startsWith("/")){
+        if (text.startsWith("/")) {
             String command = text.substring(1);
             currentScenario = Scenario.valueOf(command.toUpperCase());
             scenarioManager.setScenario(telegramUserId, currentScenario);
-        } else currentScenario = scenarioManager.getActiveScenario(telegramUserId);
-
+        }
+        currentScenario = scenarioManager.getActiveScenario(telegramUserId);
+        System.out.println("Текст: " + text + ". Текущий сценарий: " + currentScenario);
         scenarioHandlerHolder.handle(currentScenario, update);
     }
 }

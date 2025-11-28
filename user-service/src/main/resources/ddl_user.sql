@@ -1,9 +1,9 @@
 CREATE SCHEMA IF NOT EXISTS app;
-DROP TABLE app.users;
+DROP TABLE IF EXISTS app.users;
 CREATE TABLE app.users
 (
     id         uuid         NOT NULL,
-    telegramId integer      NULL,
+    telegramId VARCHAR(255)      NULL,
     first_name VARCHAR(255) NULL,
     last_name  VARCHAR(255) NULL,
     email      VARCHAR(255) NULL,

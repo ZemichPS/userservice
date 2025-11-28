@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.config.*;
+import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.config.configuration.StateMachineConfiguration;
@@ -19,8 +20,16 @@ import java.util.Map;
 public class MachineConfig extends EnumStateMachineConfigurerAdapter<RegistrationState, RegistrationEvent> {
 
     private final Map<String, AbstractAction<RegistrationState, RegistrationEvent>> actionMap;
+    private final InMemoryStateMachinePersist inMemoryStateMachinePersist;
 
-     @Override
+
+    @Override
+    public void configure(StateMachineConfigurationConfigurer<RegistrationState, RegistrationEvent> config) throws Exception {
+        config.withConfiguration().autoStartup(false);
+
+    }
+
+    @Override
     public void configure(StateMachineStateConfigurer<RegistrationState, RegistrationEvent> states) throws Exception {
         states.withStates()
                 .initial(RegistrationState.START)

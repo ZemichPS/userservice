@@ -29,9 +29,10 @@ public class EmailInputAction extends AbstractAction<RegistrationState, Registra
 
     @Override
     public void execute(StateContext<RegistrationState, RegistrationEvent> context) {
-        String chatId = context.getExtendedState().get("chatId", String.class);
+        System.out.println("Отрабатывает action emailInput");
         String telegramUserId = context.getExtendedState().get("telegramUserId", String.class);
-        String email = context.getExtendedState().get("text", String.class);
+        String chatId = context.getMessage().getHeaders().get("chatId", String.class);
+        String email = context.getMessage().getHeaders().get("text", String.class);
         UserDto user = context.getExtendedState().get("user", UserDto.class);
 
         user.setEmail(email);
@@ -40,12 +41,12 @@ public class EmailInputAction extends AbstractAction<RegistrationState, Registra
 
         SendMessage sm = createSendMessage(chatId);
         try {
+            userService.create(user);
             telegramTextSender.sendText(sm);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
         scenarioManager.clearScenario(Long.parseLong(telegramUserId));
-        userService.create(user);
     }
 
     @Override

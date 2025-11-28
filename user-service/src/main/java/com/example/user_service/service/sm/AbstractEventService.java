@@ -17,6 +17,7 @@ public abstract class AbstractEventService<S, E> {
         S currentState = stateMachineService.getCurrentState(telegramUserId.toString());
         String text = update.getMessage().getText();
         E event = resolveEvent(currentState);
+        System.out.println("Будет отправлен event: " + event);
         stateMachineService.handleEvent(telegramUserId.toString(), MessageBuilder.withPayload(event)
                 .setHeader("text", text)
                 .setHeader("telegramUserId", telegramUserId.toString())
