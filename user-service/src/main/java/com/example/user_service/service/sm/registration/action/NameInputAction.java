@@ -1,6 +1,5 @@
 package com.example.user_service.service.sm.registration.action;
 
-import com.example.user_service.dto.UserDto;
 import com.example.user_service.service.bot.TelegramTextSender;
 import com.example.user_service.service.sm.AbstractAction;
 import com.example.user_service.service.sm.registration.RegistrationEvent;
@@ -22,17 +21,13 @@ public class NameInputAction extends AbstractAction<RegistrationState, Registrat
         String chatId = context.getMessage().getHeaders().get("chatId", String.class);
         String name = context.getMessage().getHeaders().get("text", String.class);
 
-        UserDto user = context.getExtendedState().get("user", UserDto.class);
-        user.setFirstName(name);
-        user.setLastName("telegramUser");
-
+        context.getExtendedState().getVariables().put("username", name);
         SendMessage sm = createSendMessage(chatId);
         try {
             telegramTextSender.sendText(sm);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
-        context.getExtendedState().getVariables().put("user", user);
     }
 
     @Override

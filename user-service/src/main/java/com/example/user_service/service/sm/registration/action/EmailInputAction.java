@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Component("emailInput")
 public class EmailInputAction extends AbstractAction<RegistrationState, RegistrationEvent> {
@@ -32,15 +33,19 @@ public class EmailInputAction extends AbstractAction<RegistrationState, Registra
         String telegramUserId = context.getMessage().getHeaders().get("telegramUserId", String.class);
         String chatId = context.getMessage().getHeaders().get("chatId", String.class);
         String email = context.getMessage().getHeaders().get("text", String.class);
-        UserDto user = context.getExtendedState().get("user", UserDto.class);
+        String username = context.getExtendedState().get("username", String.class);
 
+        UserDto user = new UserDto(UUID.randomUUID());
+        user.setLastName("telegramUser");
+        user.setFirstName(username);
         user.setEmail(email);
         user.setBirthDate(LocalDate.now());
         user.setPassword("123456");
-
+        user.setTelegramUserId(telegramUserId);
         SendMessage sm = createSendMessage(chatId);
+        userService.create(user);
+
         try {
-            userService.create(user);
             telegramTextSender.sendText(sm);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);

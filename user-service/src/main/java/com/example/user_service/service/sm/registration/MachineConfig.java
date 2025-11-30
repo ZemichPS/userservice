@@ -33,7 +33,7 @@ public class MachineConfig extends EnumStateMachineConfigurerAdapter<Registratio
     public void configure(StateMachineStateConfigurer<RegistrationState, RegistrationEvent> states) throws Exception {
         states.withStates()
                 .initial(RegistrationState.START)
-                .end(RegistrationState.AWAITING_EMAIL)
+                .end(RegistrationState.COMPLETED)
                 .states(EnumSet.allOf(RegistrationState.class));
     }
 
@@ -55,8 +55,7 @@ public class MachineConfig extends EnumStateMachineConfigurerAdapter<Registratio
                     .source(RegistrationState.AWAITING_EMAIL)
                     .target(RegistrationState.COMPLETED)
                     .event(RegistrationEvent.SUBMIT_EMAIL)
-                .action(context -> System.out.println("FINISHED!!!!!"));
-             //       .action(actionMap.get("emailInput"));
+                   .action(actionMap.get("emailInput"));
 
     }
 

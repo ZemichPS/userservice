@@ -6,6 +6,7 @@ import com.example.user_service.model.User;
 import com.example.user_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class UserService {
                 .orElseThrow();
     }
 
+    @Transactional
     public UserDto create(UserDto userDto) {
         User newUser = UserMapper.toUser(userDto);
         User savedUser = userRepository.save(newUser);
