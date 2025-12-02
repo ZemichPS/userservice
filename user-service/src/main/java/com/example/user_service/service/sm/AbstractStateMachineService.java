@@ -1,12 +1,15 @@
 package com.example.user_service.service.sm;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachinePersist;
 import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.persist.DefaultStateMachinePersister;
 import org.springframework.statemachine.persist.StateMachinePersister;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public abstract class AbstractStateMachineService<S, E> {
 
@@ -19,17 +22,25 @@ public abstract class AbstractStateMachineService<S, E> {
         persister = new DefaultStateMachinePersister<S, E, String>(persist);
     }
 
-    public void handleEvent(String stateMachineId, Message<E> message) throws Exception {
+    public SendResult handleEvent(String stateMachineId, Message<E> message) throws Exception {
         String telegramUserId = message.getHeaders().get("telegramUserId", String.class);
         StateMachine<S, E> stateMachine = stateMachineFactory.getStateMachine(telegramUserId);
         persister.restore(stateMachine, stateMachineId);
+        clearPreviousErrors(stateMachine);
 
         if (stateMachine.getState() == null) {
             stateMachine.start();
         }
 
-        if (!stateMachine.sendEvent(message)) throw new RuntimeException("Send event failed");
+        boolean eventSendingResult = stateMachine.sendEvent(message);
+        SendResult sentResult = createSendResult(eventSendingResult, stateMachine);
+
         persister.persist(stateMachine, stateMachineId);
+        return sentResult;
+    }
+
+    private SendResult createSendResult(boolean eventSendingResult, StateMachine<S, E> stateMachine) {
+        List<String> errors = stateMachine.getExtendedState().get("errors", List.class);
     }
 
     public S getCurrentState(String stateMachineId) throws Exception {
@@ -39,6 +50,10 @@ public abstract class AbstractStateMachineService<S, E> {
             stateMachine.start();
         }
         return stateMachine.getState().getId();
+    }
+
+    private void clearPreviousErrors(StateMachine<S, E> stateMachine){
+        stateMachine.getExtendedState().getVariables().getOrDefault("errors", new HashMap<>());
     }
 
 }

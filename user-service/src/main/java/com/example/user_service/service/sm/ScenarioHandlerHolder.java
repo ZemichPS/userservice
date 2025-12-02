@@ -16,7 +16,7 @@ public class ScenarioHandlerHolder {
         handlerMap.put(scenario, handler);
     }
 
-    public void handle(Scenario scenario, Update update) {
+    public void handle(Scenario scenario, Update update) throws Exception {
         ScenarioHandler handler = handlerMap.getOrDefault(scenario, handlerMap.get(Scenario.UNDEFINED));
         handler.handle(update);
     }

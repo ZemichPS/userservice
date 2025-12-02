@@ -22,7 +22,11 @@ public class UpdateResolver {
             scenarioManager.setScenario(telegramUserId, currentScenario);
         }
         currentScenario = scenarioManager.getActiveScenario(telegramUserId);
-        System.out.println("Текст: " + text + ". Текущий сценарий: " + currentScenario);
-        scenarioHandlerHolder.handle(currentScenario, update);
+
+        try {
+            scenarioHandlerHolder.handle(currentScenario, update);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

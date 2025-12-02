@@ -15,7 +15,7 @@ public class UndefinedScenarioHandler implements ScenarioHandler {
     private final TelegramClient telegramClient;
 
     @Override
-    public void handle(Update update) {
+    public void handle(Update update) throws Exception {
         Long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = SendMessage.builder()
                 .text("Команда не распознана")

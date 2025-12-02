@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface ScenarioHandler {
-    void handle(Update update);
+    void handle(Update update) throws Exception;
 
     Scenario getScenarioType();
 
